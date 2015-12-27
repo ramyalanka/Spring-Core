@@ -1,0 +1,9 @@
+There are 4 stereotype annotations available in 'org.springframework.stereotype' package - 
+
+@Component – Indicates a auto scan component.
+@Repository – Indicates DAO component in the persistence layer.
+@Service – Indicates a Service component in the business layer.
+@Controller – Indicates a controller component in the presentation layer.
+
+In order to enable auto-scanning feature you need to add one more tag in your spring configuration file - 
+<context:component-scan basePackage="your package"/>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:task="http://www.springframework.org/schema/task" xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation=	
+		"http://www.springframework.org/schema/aop 
+    		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd 
+    		http://www.springframework.org/schema/beans 
+    		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+    		http://www.springframework.org/schema/context 
+    		http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+    		http://www.springframework.org/schema/jee 
+    		http://www.springframework.org/schema/jee/spring-jee-3.2.xsd 
+    		http://www.springframework.org/schema/tx 
+    		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd 
+    		http://www.springframework.org/schema/util 
+			http://www.springframework.org/schema/util/spring-util.xsd
+    		http://www.springframework.org/schema/task 
+    		http://www.springframework.org/schema/task/spring-task-3.2.xsd
+    		http://www.springframework.org/schema/mvc
+    		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">	
+
+			<!-- <bean id="singletonUser" class="org.ramya.bean.User" scope="singleton"/>
+			<bean id="prototypeUser" class="org.ramya.bean.User" scope="prototype"/> -->
+			
+			<bean id="answer1" class="org.ramya.bean.Answer">  
+				<property name="id" value="1"></property>  
+				<property name="name" value="Java is a programming language"></property> 
+				</bean>  
+				<bean id="answer2" class="org.ramya.bean.Answer">  
+				<property name="id" value="2"></property>  
+				<property name="name" value="Java is a platform"></property>
+			</bean>
+			
+			<bean id="user1" class="org.ramya.bean.User">  
+				<property name="id" value="1"></property>  
+				<property name="name" value="Arun Kumar"></property>
+			</bean>  
+			<bean id="user2" class="org.ramya.bean.User">  
+				<property name="id" value="2"></property>  
+				<property name="name" value="Varun Kumar"></property>  
+			</bean>  
+			
+			<bean id="q" class="org.ramya.bean.Question">  
+				<property name="id" value="1"></property>  
+				<property name="name" value="What is Java?"></property>  
+				<property name="answers">  
+				<map>  
+					<entry key="Java is a programming language"  value="Sonoo Jaiswal"></entry>  
+					<entry key="Java is a Platform" value="Sachin Yadav"></entry>  
+				</map>
+				</property>
+				<property name="answerMap">  
+					<map>  
+						<entry key-ref="answer1" value-ref="user1"></entry>  
+						<entry key-ref="answer2" value-ref="user2"></entry>  
+					</map>  
+				</property>
+			</bean>
+</beans>  

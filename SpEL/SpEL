@@ -1,0 +1,184 @@
+The SpEL are enclosed with #{ SpEL expression }
+
+public class Customer {
+	private Item item;
+	private String itemName;
+}
+
+public class Item {
+	private String name;
+	private int qty;
+}
+
+SpEL in XML-
+
+	<bean id="itemBean" class="com.mkyong.core.Item">
+		<property name="name" value="itemA" />
+		<property name="qty" value="10" />
+	</bean>
+
+	<bean id="customerBean" class="com.mkyong.core.Customer">
+		<property name="item" value="#{itemBean}" />
+		<property name="itemName" value="#{itemBean.name}" />
+	</bean>
+	
+#{itemBean} – inject "itemBean" into "customerBean" bean's "item" property.
+#{itemBean.name} – inject "itemBean"'s "name" property into "customerBean" bean's "itemName" property.
+
+
+SpEL in annotations - 
+
+@Component("customerBean")
+public class Customer {
+	@Value("#{itemBean}")
+	private Item item;
+
+	@Value("#{itemBean.name}")
+	private String itemName;
+}
+
+@Component("itemBean")
+public class Item {
+	@Value("itemA") //inject String directly
+	private String name;
+
+	@Value("10") //inject interger directly
+	private int qty;
+
+	public String getName() {
+		return name;
+	}
+}
+
+SpEL IN METHOD INVOCATION -
+
+1 Call the 'toUpperCase()' method on the string literal.
+	@Value("#{'mkyong'.toUpperCase()}")
+	private String name;
+
+2. Call the 'getSpecialPrice()' method on bean 'priceBean'.
+	@Value("#{priceBean.getSpecialPrice()}")
+	private double amount; 
+
+
+OPERATORS IN SpEL - 
+
+//Relational operators
+	
+	@Value("#{1 == 1}") //true
+	private boolean testEqual;
+	
+	@Value("#{1 != 1}") //false
+	private boolean testNotEqual;
+	
+	@Value("#{1 < 1}") //false
+	private boolean testLessThan;
+	
+	@Value("#{1 <= 1}") //true
+	private boolean testLessThanOrEqual;
+	
+	@Value("#{1 > 1}") //false
+	private boolean testGreaterThan;
+	
+	@Value("#{1 >= 1}") //true
+	private boolean testGreaterThanOrEqual;
+
+//Logical operators , numberBean.no == 999
+	
+	@Value("#{numberBean.no == 999 and numberBean.no < 900}") //false
+	private boolean testAnd;
+	
+	@Value("#{numberBean.no == 999 or numberBean.no < 900}") //true
+	private boolean testOr;
+	
+	@Value("#{!(numberBean.no == 999)}") //false
+	private boolean testNot;
+
+// Mathematical operators
+	
+	@Value("#{1 + 1}") //2.0
+	private double testAdd;
+	
+	@Value("#{'1' + '@' + '1'}") //1@1
+	private String testAddString;
+	
+	@Value("#{1 - 1}") //0.0
+	private double testSubtraction;
+
+	@Value("#{1 * 1}") //1.0
+	private double testMultiplication;
+	
+	@Value("#{10 / 2}") //5.0
+	private double testDivision;
+	
+	@Value("#{10 % 10}") //0.0
+	private double testModulus ;
+	
+	@Value("#{2 ^ 2}") //4.0
+	private double testExponentialPower;
+
+// Ternary operator.
+
+	@Value("#{itemBean.qtyOnHand < 100 ? true : false}")
+	private boolean warning;
+
+
+	<property name="testEqual" value="#{1 == 1}" />
+	<property name="testNotEqual" value="#{1 != 1}" />
+	<property name="testLessThan" value="#{1 lt 1}" />
+	<property name="testLessThanOrEqual" value="#{1 le 1}" />
+	<property name="testGreaterThan" value="#{1 > 1}" />
+	<property name="testGreaterThanOrEqual" value="#{1 >= 1}" />
+
+	<property name="testAnd" value="#{numberBean.no == 999 and numberBean.no lt 900}" />
+	<property name="testOr" value="#{numberBean.no == 999 or numberBean.no lt 900}" />
+	<property name="testNot" value="#{!(numberBean.no == 999)}" />
+
+	<property name="testAdd" value="#{1 + 1}" />
+	<property name="testAddString" value="#{'1' + '@' + '1'}" />
+	<property name="testSubtraction" value="#{1 - 1}" />
+	<property name="testMultiplication" value="#{1 * 1}" />
+	<property name="testDivision" value="#{10 / 2}" />
+	<property name="testModulus" value="#{10 % 10}" />
+	<property name="testExponentialPower" value="#{2 ^ 2}" />
+	<property name="warning" value="#{itemBean.qtyOnHand < 100 ? true : false}" />
+
+
+SpEL IN COLLECTION - 
+
+//get map whete key = 'MapA'
+	@Value("#{testBean.map['MapA']}")
+	private String mapA;
+
+//get first value from list, list is 0-based.
+	@Value("#{testBean.list[0]}")
+	private String list;
+
+
+<property name="mapA" value="#{testBean.map['MapA']}" />
+<property name="list" value="#{testBean.list[0]}" />
+
+
+SpEL WITH REGEX -
+
+// email regular expression
+	String emailRegEx = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)" +
+			"*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+// if this is a digit?
+	@Value("#{'100' matches '\\d+' }")
+	private boolean validDigit;
+
+// if this is a digit + ternary operator
+	@Value("#{ ('100' matches '\\d+') == true ? " +
+			"'yes this is digit' : 'No this is not a digit'  }")
+	private String msg;
+
+// if this emailBean.emailAddress contains a valid email address?
+	@Value("#{emailBean.emailAddress matches customerBean.emailRegEx}")
+	private boolean validEmail;
+
+
+<property name="validDigit" value="#{'100' matches '\d+' }" />
+<property name="msg" value="#{ ('100' matches '\d+') == true ? 'yes this is digit' : 'No this is not a digit'  }" />
+<property name="validEmail" value="#{emailBean.emailAddress matches '^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$' }" />
